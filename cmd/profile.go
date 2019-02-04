@@ -38,14 +38,17 @@ no arguments to create or update all required profiles.`,
 		if len(args) > 0 {
 			name = args[0]
 		}
+
 		log.Running("Managing profiles")
 		c, err := lxd.ConnectLXDUnix("/var/snap/lxd/common/lxd/unix.socket", nil)
 		if err != nil {
 			log.Error("Unable to connect: " + err.Error())
 			os.Exit(1)
 		}
-		profs := make([]string, len(profiles))
+		profs := make([]string, 0)
+
 		if name == "" {
+			profs = make([]string, len(profiles))
 			copy(profs, profiles)
 		} else {
 			profs = append(profs, name)
